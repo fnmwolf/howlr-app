@@ -106,16 +106,6 @@ const GroupTelegramChatsList = ({
 
   const keyExtractor = useCallback(({ id }) => id, []);
 
-  const ListEmptyComponent = useCallback(() => (
-    <Text
-      appearance="hint"
-      category="c2"
-      style={styles.emptyListMessage}
-    >
-      No linked groups
-    </Text>
-  ), []);
-
   return (
     <List
       data={sortedTelegramChats}
@@ -123,7 +113,6 @@ const GroupTelegramChatsList = ({
       keyExtractor={keyExtractor}
       refreshing={true}
       style={styles.listStyle}
-      ListEmptyComponent={ListEmptyComponent}
       {...props}
     />
   )
@@ -137,11 +126,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  emptyListMessage: {
-    marginVertical: 25,
-    textAlign: 'center',
-    backgroundColor: 'transparent'
   },
   listItem: {
     paddingHorizontal: 0,

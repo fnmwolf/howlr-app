@@ -115,17 +115,16 @@ const GroupProfileItemTelegramChats = ({ group, ...props }) => {
           {trim(`
 Your group must be public (please use a Lobby group if necessary.) You must also be an administrator or the owner of the group.
 
-The ${name} group must of course be related to the Telegram group you want to link. While groups don't have to follow the same rules as ${name} does, groups hosting illegal content, hate speech, real-life abuse of animals, doxing or harassment are forbidden.
+While groups don't have to follow the same rules as ${name}, groups hosting illegal content, hate speech, real-life abuse of animals, doxing or harassment are forbidden.
 `)}
         </Text>
 
         <Text
           category="c1"
           appearance="hint"
-          style={styles.description}
+          style={[styles.description, { marginTop: 10 }]}
         >
-          {trim(`
-Once this is done you can safely remove the @${groupBotUsername} from your group. If you wish to later unlink your group, please invite the bot again and use the /unlink command with the same parameter.
+          {trim(`If you wish to later unlink your group, please invite the bot again and use the /unlink command with the same parameter.
 `)}
         </Text>
       </FormModal>
@@ -148,7 +147,6 @@ const styles = StyleSheet.create({
   },
   description: {
     paddingHorizontal: 5,
-    marginTop: 10
   },
   helpContainer: {
     paddingVertical: 40
