@@ -1,16 +1,16 @@
 import { useMutation, gql } from '@apollo/client';
 
-import { GROUP_FRAGMENT } from './useGetApp';
+import { GROUP_FULL_FRAGMENT } from './useGetGroup';
 
 export const JOIN_GROUP = gql`
   mutation joinGroup($input: JoinGroupInput!) {
     joinGroup(input: $input) {
       group {
-        ...GroupFragment
+        ...GroupFullFragment
       }
     }
   }
-${GROUP_FRAGMENT}
+${GROUP_FULL_FRAGMENT}
 `;
 
 export default (options) => {

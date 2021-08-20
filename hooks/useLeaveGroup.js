@@ -1,16 +1,16 @@
 import { useMutation, gql } from '@apollo/client';
 
-import { GROUP_FRAGMENT } from './useGetApp';
+import { GROUP_FULL_FRAGMENT } from './useGetGroup';
 
 export const LEAVE_GROUP = gql`
   mutation leaveGroup($input: LeaveGroupInput!) {
     leaveGroup(input: $input) {
       group {
-        ...GroupFragment
+        ...GroupFullFragment
       }
     }
   }
-${GROUP_FRAGMENT}
+${GROUP_FULL_FRAGMENT}
 `;
 
 export default (options) => {

@@ -3,30 +3,22 @@ import { View, StyleSheet, Animated, Platform } from 'react-native';
 import { Divider, Text, useTheme } from '@ui-kitten/components';
 
 import ScreenTopNavigation from '../components/ScreenTopNavigation';
-import useGetEvent from '../hooks/useGetEvent';
-import useApp from '../hooks/useApp';
 
-import EventActionsMenu from '../components/events/EventActionsMenu';
 import EventLoader from '../components/events/EventLoader';
-import EventHeader from '../components/events/EventHeader';
-import EventProfileNoteAddress from '../components/events/EventProfileNoteAddress';
-import EventProfileNotePrivacyStatus from '../components/events/EventProfileNotePrivacyStatus';
-import EventProfileNoteDate from '../components/events/EventProfileNoteDate';
-import EventProfileItemDescription from '../components/events/EventProfileItemDescription';
-import EventProfileItemAttendees from '../components/events/EventProfileItemAttendees';
-import JoinEventButton from '../components/events/JoinEventButton';
+import useGetGroup from '../hooks/useGetGroup';
 
-const Event = ({ route: { params: { id } }}) => {
-  const { data: eventData } = useGetEvent({
+import GroupHeader from '../components/groups/GroupHeader';
+import JoinGroupButton from '../components/groups/JoinGroupButton';
+import GroupProfileNoteUsersCount from '../components/groups/GroupProfileNoteUsersCount';
+import GroupProfileNoteCategory from '../components/groups/GroupProfileNoteCategory';
+import GroupProfileItemLastMembers from '../components/groups/GroupProfileItemLastMembers';
+import GroupProfileItemTelegramChats from '../components/groups/GroupProfileItemTelegramChats';
+
+const Group = ({ route: { params: { id } }}) => {
+  const { data: groupData } = useGetGroup({
     variables: { id }
   });
-  const event = eventData?.viewer?.event;
-
-  const { eventCategories } = useApp();
-
-  const eventCategory = useMemo(() => (
-    eventCategories.find(({ id }) => id === event?.eventCategoryId)
-  ), [event, eventCategories]);
+  const group = groupData?.viewer?.group;
 
   const theme = useTheme();
 
@@ -56,18 +48,17 @@ const Event = ({ route: { params: { id } }}) => {
                 style={[ style, styles.headerAnimatedItems, { opacity: navigationDefaultTitleOpacity }]}
                 {...props}
               >
-                {eventCategory?.label}
+                Groups
               </Animated.Text>
               <Animated.View
                 style={[ styles.headerAnimatedItems, { opacity: navigationUserNameTitleOpacity }]}
                 {...props}
               >
-                <Text category="s1">{event?.title}</Text>
+                <Text category="s1">{group?.name}</Text>
               </Animated.View>
             </>
           )
         }}
-        accessoryRight={() => event ? <EventActionsMenu event={event} /> : null}
       />
       <Animated.ScrollView
         contentContainerStyle={Platform.OS === 'ios' ? {} : styles.scrollViewContentContainerStyle}
@@ -82,33 +73,29 @@ const Event = ({ route: { params: { id } }}) => {
         )}
       >
         {
-          event ? (
+          group ? (
             <>
               <View
                 style={styles.headerRoot}
               >
-                <EventHeader event={event} />
+                <GroupHeader group={group} />
                 <View
                   style={styles.headerAboutSummary}
                 >
-                  <EventProfileNoteDate
-                    event={event}
+                  <GroupProfileNoteCategory
+                    group={group}
                     style={styles.headerAboutSummaryItem}
                   />
-                  <EventProfileNoteAddress
-                    event={event}
-                    style={styles.headerAboutSummaryItem}
-                  />
-                  <EventProfileNotePrivacyStatus
-                    event={event}
+                  <GroupProfileNoteUsersCount
+                    group={group}
                     style={styles.headerAboutSummaryItem}
                   />
                 </View>
                 <View
                   style={styles.headerActions}
                 >
-                  <JoinEventButton
-                    event={event}
+                  <JoinGroupButton
+                    group={group}
                     style={styles.headerActionsItemRight}
                   />
                 </View>
@@ -117,14 +104,14 @@ const Event = ({ route: { params: { id } }}) => {
               <Divider />
 
               <View
-                style={[ styles.eventItems, { backgroundColor: theme['background-basic-color-2'] }]}
+                style={[ styles.groupItems, { backgroundColor: theme['background-basic-color-2'] }]}
               >
-                <EventProfileItemDescription
-                  event={event}
+                <GroupProfileItemTelegramChats
+                  group={group}
                   style={styles.profileItem}
                 />
-                <EventProfileItemAttendees
-                  event={event}
+                <GroupProfileItemLastMembers
+                  group={group}
                   style={styles.profileItem}
                 />
               </View>
@@ -159,16 +146,18 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   headerActions: {
+    display: 'flex',
+    flexDirection: 'row',
     marginTop: 24,
   },
   headerActionsItemRight: {
     flex: 1,
   },
-  eventItems: {
+  groupItems: {
     minHeight: '100%',
     paddingTop: 20,
   },
-  eventItem: {
+  groupItem: {
     marginBottom: 20,
   },
   scrollViewContentContainerStyle: {
@@ -179,4 +168,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default React.memo(Event);
+export default React.memo(Group);

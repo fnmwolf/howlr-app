@@ -34,49 +34,50 @@ const GroupItem = ({ group }) => {
     groupCategory?.label?.replace(/s$/, '').toUpperCase()
   ), [groupCategory])
 
-  const {
-    join: handleJoin,
-    leave: handleLeave,
-    joined,
-  } = useToggleGroup({ group });
-
-  const showActionSheetWithOptions = useResponsiveActionSheet();
-  const [ setUsersSearchCriteria ] = useSetUsersSearchCriteria();
   const navigation = useNavigation();
-  const handleOpenGroupMenu = useCallback(() => {
-    showActionSheetWithOptions(
-      {
-        options: [joined ? 'Leave group' : 'Join group', 'Open in Search', 'Cancel'],
-        cancelButtonIndex: 2,
-        destructiveButtonIndex: joined ? 0 : undefined,
-        title: group.name,
-      },
-      async (buttonIndex) => {
-        if (buttonIndex === 0) {
-          showTransactionLoader(joined ? handleLeave : handleJoin);
-        }
-        if (buttonIndex === 1) {
-          await setUsersSearchCriteria({
-            variables: {
-              usersSearchCriteria: {
-                ...DEFAULT_USERS_SEARCH_CRITERIA,
-                groupIds: [group.id]
-              }
-            }
-          });
-          navigation.navigate("Users");
-        }
-      }
-    )
-  }, [
-    group,
-    showActionSheetWithOptions,
-    setUsersSearchCriteria,
-    navigation,
-    joined,
-    handleLeave,
-    handleJoin
-  ]);
+  const handleGoToGroup = useCallback(() => {
+    navigation.navigate("Group", { id: group.id })
+  }, [navigation, group.id]);
+
+  const { joined } = useToggleGroup({ group });
+
+  // const showActionSheetWithOptions = useResponsiveActionSheet();
+  // const [ setUsersSearchCriteria ] = useSetUsersSearchCriteria();
+  // const navigation = useNavigation();
+  // const handleOpenGroupMenu = useCallback(() => {
+  //   showActionSheetWithOptions(
+  //     {
+  //       options: [joined ? 'Leave group' : 'Join group', 'Open in Search', 'Cancel'],
+  //       cancelButtonIndex: 2,
+  //       destructiveButtonIndex: joined ? 0 : undefined,
+  //       title: group.name,
+  //     },
+  //     async (buttonIndex) => {
+  //       if (buttonIndex === 0) {
+  //         showTransactionLoader(joined ? handleLeave : handleJoin);
+  //       }
+  //       if (buttonIndex === 1) {
+  //         await setUsersSearchCriteria({
+  //           variables: {
+  //             usersSearchCriteria: {
+  //               ...DEFAULT_USERS_SEARCH_CRITERIA,
+  //               groupIds: [group.id]
+  //             }
+  //           }
+  //         });
+  //         navigation.navigate("Users");
+  //       }
+  //     }
+  //   )
+  // }, [
+  //   group,
+  //   showActionSheetWithOptions,
+  //   setUsersSearchCriteria,
+  //   navigation,
+  //   joined,
+  //   handleLeave,
+  //   handleJoin
+  // ]);
 
   const renderJoined = useCallback(() => {
     if (joined) {
@@ -116,7 +117,7 @@ const GroupItem = ({ group }) => {
 
   return (
     <ListItem
-      onPress={handleOpenGroupMenu}
+      onPress={handleGoToGroup}
       title={renderTitle}
       description={groupDescription}
       accessoryRight={renderJoined}

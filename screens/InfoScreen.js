@@ -19,7 +19,9 @@ export const renderInfoScreenItem = ({ item: { title, body } }) => {
         }
 
         return (
-          <Markdown style={{ body: [style, styles.subtitle] }}>{body}</Markdown>
+          <Markdown style={{ body: [style, styles.subtitle] }}>
+            {body}
+          </Markdown>
         )
       }}
     />

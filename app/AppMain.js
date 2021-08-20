@@ -16,6 +16,7 @@ import ProfileRouter from '../routers/ProfileRouter';
 import Settings from '../screens/Settings';
 import User from '../screens/User';
 import Event from '../screens/Event';
+import Group from '../screens/Group';
 import Chat from '../screens/Chat';
 import TermsAndConditions from '../screens/TermsAndConditions';
 import PrivacyPolicy from '../screens/PrivacyPolicy';
@@ -253,6 +254,10 @@ const AppMain = () => {
                             <MainNavigator.Screen
                               name="Event"
                               component={Event}
+                            />
+                            <MainNavigator.Screen
+                              name="Group"
+                              component={Group}
                             />
                             <MainNavigator.Screen
                               name="Chat"

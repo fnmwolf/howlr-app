@@ -43,7 +43,7 @@ const Sessions = () => {
         body: trim(`
 You can find below the list of all your sessions. ${name} will create a new session everytime you login and will remove it when you logout.
 
-If something looks suspicious to you, do not hesitate to close the session by clicking on it and select "Delete session". Most of the time inactive sessions comes from previous installations of ${name} that were uninstalled without logging out. 
+If something looks suspicious to you, do not hesitate to close the session by clicking on it and select "Delete session". Most of the time inactive sessions come from previous installations of ${name} that were uninstalled without logging out. 
         `)
       },
       ...sortedSessions

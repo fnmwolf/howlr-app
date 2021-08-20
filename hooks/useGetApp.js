@@ -23,10 +23,11 @@ export const APP_FRAGMENT = gql`
     maximumJoinedGroupsCount
     eventsMaximumSearchableDistance
     eventsMaxPerWeek
+    lastMembersCount
     codeBotUsername
-    
     websiteLink
     githubLink
+    groupBotUsername
     logo
     changelogs {
       id

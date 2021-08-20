@@ -20,11 +20,11 @@ const UserActionsMenu = ({
 
   const handleOpenMenu = useCallback(() => {
     setMenuOpen(true);
-  });
+  }, []);
 
   const handleCloseMenu = useCallback(() => {
     setMenuOpen(false);
-  })
+  }, [])
 
   const blockUser = useBlockUser();
   const handleBlockUser = useCallback(() => {

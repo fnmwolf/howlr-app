@@ -4,12 +4,12 @@ import { useTheme, Divider, Text, Button, Icon, ListItem } from '@ui-kitten/comp
 import { View, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import EventAttendeesList from './EventAttendeesList';
 import useSetUsersSearchCriteria from '../../hooks/useSetUsersSearchCriteria';
 import { DEFAULT_USERS_SEARCH_CRITERIA } from '../../graphql/apolloClient';
-import useGetUserSummaries from '../../hooks/useGetUserSummaries';
 
-const EventProfileItemAttendees = ({ event, ...props }) => {
+import GroupMembersList from './GroupMembersList';
+
+const GroupProfileItemLastMembers = ({ group, ...props }) => {
   const theme = useTheme();
   const navigation = useNavigation();
 
@@ -19,20 +19,16 @@ const EventProfileItemAttendees = ({ event, ...props }) => {
       variables: {
         usersSearchCriteria: {
           ...DEFAULT_USERS_SEARCH_CRITERIA,
-          eventIds: [event.id]
+          groupIds: [group.id]
         }
       }
     });
     navigation.navigate("Users");
-  }, [event, navigation, setUsersSearchCriteria]);
+  }, [group, navigation, setUsersSearchCriteria]);
 
-  const { data: usersData, loading } = useGetUserSummaries({
-    variables: {
-      ...DEFAULT_USERS_SEARCH_CRITERIA,
-      eventIds: [event.id]
-    }
-  });
-  const users = usersData?.viewer?.userSummaries || [];
+  if (group.lastMembers.length === 0) {
+    return (null);
+  }
 
   return (
     <View
@@ -47,28 +43,22 @@ const EventProfileItemAttendees = ({ event, ...props }) => {
           category="label"
           style={styles.label}
         >
-          {"VISIBLE USERS GOING TO THIS EVENT"}
+          {`LAST MEMBERS`}
         </Text>
-        <EventAttendeesList
-          event={event}
-          users={users}
-          loading={loading}
+        <GroupMembersList
+          group={group}
         />
-        {
-          (users.length > 0 || event.user) && (
-            <Button
-              appearance="outline"
-              style={styles.openInSearchButton}
-              onPress={handleGoToSearch}
-              accessoryLeft={({ style }) => (
-                <Icon name="search" style={style} />
-              )}
-              size="small"
-            >
-              OPEN IN SEARCH
-            </Button>
-          )
-        }
+        <Button
+          appearance="outline"
+          style={styles.openInSearchButton}
+          onPress={handleGoToSearch}
+          accessoryLeft={({ style }) => (
+            <Icon name="search" style={style} />
+          )}
+          size="small"
+        >
+          OPEN IN SEARCH
+        </Button>
       </View>
       <Divider />
     </View>
@@ -90,4 +80,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default React.memo(EventProfileItemAttendees);
+export default React.memo(GroupProfileItemLastMembers);
