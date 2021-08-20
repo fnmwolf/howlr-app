@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 import AppLink from 'react-native-app-link';
 
 import ThemedOverflowMenu from '../ThemedOverflowMenu';
+import TelegramChatReportForm from './TelegramChatReportForm';
 
 const MenuIcon = (props) => (
   <Icon {...props} name='more-vertical' />
@@ -41,32 +42,51 @@ const GroupTelegramChatsListItem = ({ item }) => {
 
   const [ menuOpen, setMenuOpen ] = useState(false);
 
+  const [ telegramChatReportFormOpen, setTelegramChatReportFormOpen ] = useState(false);
+
+  const handleOpenTelegramChatReportForm = useCallback(() => {
+    setTelegramChatReportFormOpen(true);
+    handleCloseMenu();
+  }, []);
+
+  const handleCloseTelegramChatReportForm = useCallback(() => {
+    setTelegramChatReportFormOpen(false);
+  }, []);
+
   return (
-    <ListItem
-      style={styles.listItem}
-      onPress={handleToToGroup}
-      title={({ style }) => (
-        <Text style={[ style, styles.listItemText ]}>
-          {trim(item.title)}
-        </Text>
-      )}
-      description={({ style }) => (
-        <Text style={[ style, styles.listItemText ]}>
-          {`Added on ${format(new Date(item.createdAt), "MMM. do  Y")}`}
-        </Text>
-      )}
-      accessoryRight={() => (
-        <ThemedOverflowMenu
-          anchor={renderMenuAction}
-          visible={menuOpen}
-          onBackdropPress={handleCloseMenu}
-        >
-          <MenuItem
-            title='Report group'
-          />
-        </ThemedOverflowMenu>
-      )}
-    />
+    <>
+      <ListItem
+        style={styles.listItem}
+        onPress={handleToToGroup}
+        title={({ style }) => (
+          <Text style={[ style, styles.listItemText ]}>
+            {trim(item.title)}
+          </Text>
+        )}
+        description={({ style }) => (
+          <Text style={[ style, styles.listItemText ]}>
+            {`Added on ${format(new Date(item.createdAt), "MMM. do  Y")}`}
+          </Text>
+        )}
+        accessoryRight={() => (
+          <ThemedOverflowMenu
+            anchor={renderMenuAction}
+            visible={menuOpen}
+            onBackdropPress={handleCloseMenu}
+          >
+            <MenuItem
+              title='Report group'
+              onPress={handleOpenTelegramChatReportForm}
+            />
+          </ThemedOverflowMenu>
+        )}
+      />
+      <TelegramChatReportForm
+        open={telegramChatReportFormOpen}
+        onClose={handleCloseTelegramChatReportForm}
+        telegramChat={item}
+      />
+    </>
   );
 }
 
